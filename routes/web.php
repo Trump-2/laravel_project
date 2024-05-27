@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// import 我們建立的 controller
+use App\Http\Controllers\ExampleController;
 
-Route::get('/', function () {
-    // return view('welcome');
-    return '<h1>Home page</h1><a href="/about">View the about page</a>';
-});
+Route::get('/', [ExampleController::class, 'homepage']);
 
-Route::get('/about', function () {
-    return '<h1>About page</h1><a href="/">Back to home</a>';
-});
+Route::get(
+    '/about',
+    // return '<h1>About page</h1><a href="/">Back to home</a>';
+    [ExampleController::class, 'aboutpage']
+);
