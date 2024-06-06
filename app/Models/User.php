@@ -16,6 +16,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
     // 表示這些名稱允許出現在傳入的陣列中
     protected $fillable = [
         'username',
