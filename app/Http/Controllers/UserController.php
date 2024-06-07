@@ -8,8 +8,16 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    public function logout()
+    {
+        // auth()->logout() 用來登出使用者
+        auth()->logout();
+        return 'You are now logged out';
+    }
+
     public function showCorrectHomepage()
     {
+        // auth()->check() 用來檢查使用者是否已經登入，如果是則回傳 true、反之則為 false
         if (auth()->check()) {
             return view('homepage-feed');
         } else {
