@@ -12,7 +12,7 @@ class UserController extends Controller
     {
         // auth()->logout() 用來登出使用者
         auth()->logout();
-        return 'You are now logged out';
+        return redirect('/')->with('success', 'You are now logged out.');
     }
 
     public function showCorrectHomepage()
@@ -35,9 +35,9 @@ class UserController extends Controller
         // laravel 內建的全域函數【auth ( )】中的【attempt ( )】會將資料庫中資料表中某筆紀錄的指定欄位值和使用者輸入的值進行比較，如果相同回傳 true、反之則為 false； 
         if (auth()->attempt(['username' => $incomingFields['loginusername'], 'password' => $incomingFields['loginpassword']])) {
             $request->session()->regenerate();
-            return 'Congrats';
+            return redirect('/')->with('success', 'You have successfully logged in.');
         } else {
-            return 'Sorry...';
+            return redirect('/')->with('failure', 'Invalid login.');
         }
     }
 
@@ -63,8 +63,12 @@ class UserController extends Controller
         $incomingFields['password'] = bcrypt($incomingFields['password']);
 
         // 使用 User Model 將表單送來的資料存入資料庫中
-        User::create($incomingFields);
+        $user = User::create($incomingFields);
         // dd($incomingFields);
-        return 'Hello from register function';
+
+        // 使用 auth()->login() 來登入使用者
+        auth()->login($user);
+
+        return redirect('/')->with('success', 'Thank you for creating an account');
     }
 }
