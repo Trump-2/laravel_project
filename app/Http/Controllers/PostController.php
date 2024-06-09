@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function viewSinglePost()
+    public function viewSinglePost(Post $id)
     {
-        return view('single-post');
+        // 存取資料表中某筆紀錄的 title 欄位值
+        // return $id->title;
+
+        return view('single-post', ['post' => $id]);
     }
     //
     public function storeNewPost(Request $request)
