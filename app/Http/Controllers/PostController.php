@@ -29,7 +29,9 @@ class PostController extends Controller
         // 從 session 中得到登入使用者所擁有的 id，透過使用內建的【auth(  ) -> id ( )】
         $incomingFields['user_id'] = auth()->id();
 
-        Post::create($incomingFields);
+        $newPost = Post::create($incomingFields);
+
+        return redirect("/post/{$newPost->id}")->with('success', 'New post successfully created');
     }
 
     public function showCreateForm()
