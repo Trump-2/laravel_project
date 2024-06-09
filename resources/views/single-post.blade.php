@@ -18,7 +18,8 @@
       </p>
 
       <div class="body-content">
-        {{$post->content}}
+        {{-- 將內容中包含的 html tag 解釋為 html --}}
+        {!! $post->content !!}
       </div>
     </div>
 </x-layout>
