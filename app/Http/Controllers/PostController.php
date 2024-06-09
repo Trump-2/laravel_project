@@ -41,6 +41,7 @@ class PostController extends Controller
 
     public function showCreateForm()
     {
+
         return view('create-post');
     }
 }
