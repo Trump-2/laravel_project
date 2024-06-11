@@ -13,9 +13,9 @@ Route::post('/register', [UserController::class, 'register'])->middleware('guest
 // 只有訪客可以訪問 /login，所以使用 middleware('guest')
 Route::post('/login', [UserController::class, 'login'])->middleware('guest');
 // 只有登入者可以訪問 /logout，所以使用 middleware('guest')
-Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
+Route::post('/logout', [UserController::class, 'logout'])->middleware('mustBeLoggedIn');
 
 // Blog post related routes
 Route::get('/create-post', [PostController::class, 'showCreateForm'])->middleware('mustBeLoggedIn');
-Route::post('/create-post', [PostController::class, 'storeNewPost'])->middleware('auth');
+Route::post('/create-post', [PostController::class, 'storeNewPost'])->middleware('mustBeLoggedIn');
 Route::get('/post/{id}', [PostController::class, 'viewSinglePost']);
