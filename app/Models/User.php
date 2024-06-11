@@ -46,4 +46,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function posts()
+    {
+        // hasMany 是 Laravel Eloquent 中的一個方法，用來定義一對多的關係
+        return $this->hasMany(Post::class, 'user_id');
+    }
 }
