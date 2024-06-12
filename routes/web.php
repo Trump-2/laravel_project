@@ -7,7 +7,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\MustBeLoggedIn;
 
 
-Route::get('/admins-only');
+Route::get('/admins-only', function () {
+    return "Only admins should be able to see this page.";
+})->middleware('can:visitAdminPages');
 
 // User related routes
 Route::get('/', [UserController::class, 'showCorrectHomepage'])->name('login');
