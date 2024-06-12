@@ -19,7 +19,11 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('mustBeLog
 Route::get('/create-post', [PostController::class, 'showCreateForm'])->middleware('mustBeLoggedIn');
 Route::post('/create-post', [PostController::class, 'storeNewPost'])->middleware('mustBeLoggedIn');
 Route::get('/post/{id}', [PostController::class, 'viewSinglePost']);
-Route::delete('/post/{id}', [PostController::class, 'delete']);
+// 示範在 route 中使用自定義的 policy
+Route::delete('/post/{id}', [PostController::class, 'delete'])->middleware('can:delete,post');
+Route::get('/post/{id}/edit', [PostController::class, 'showEditForm'])->middleware('can:update, post');
+Route::put('/post/{id}', [PostController::class, 'update'])->middleware('can:update,post');
+
 
 // Profile related routes
 // 參數的後面加上【 : 在資料表中作為查找依據的欄位名稱】

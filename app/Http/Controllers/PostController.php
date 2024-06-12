@@ -8,13 +8,32 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function update(Post $post, Request $request)
+    {
+        $incomingFields = $request->validate([
+            'title' => 'required',
+            'content' => 'required'
+        ]);
+
+        $incomingFields['title'] = strip_tags($incomingFields['title']);
+        $incomingFields['content'] = strip_tags($incomingFields['content']);
+
+        $post->update($incomingFields);
+        // 直接將使用者導向回來自的 URL；
+        return back()->with('success', 'Post updated successfully.');
+    }
+    public function showEditForm(Post $id)
+    {
+
+        return view('edit-post', ['post' => $id]);
+    }
     public function delete(Post $id)
     {
         // 示範在 controller 中使用自定義的 policy
         // 使用 cannot() 來判斷當前使用者是否能夠刪除這則 post
-        if (auth()->user()->cannot('delete', $id)) {
-            return 'You cannot do that';
-        };
+        // if (auth()->user()->cannot('delete', $id)) {
+        //     return 'You cannot do that';
+        // };
 
         $id->delete();
 

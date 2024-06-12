@@ -7,7 +7,7 @@
         {{-- 使用 @can，來決定當前的使用者是否能 update 這個 post --}}
         @can('update',$post)
         <span class="pt-2">
-          <a href="#" class="text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>
+          <a href="/post/{{ $post->id }}/edit" class="text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>
           <form class="delete-post-form d-inline" action="/post/{{ $post->id }}" method="POST">
             @csrf
             {{-- 透過此 blade 指令來讓 form 能夠送出 delete request --}}
