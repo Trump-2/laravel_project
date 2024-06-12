@@ -6,6 +6,9 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\MustBeLoggedIn;
 
+
+Route::get('/admins-only');
+
 // User related routes
 Route::get('/', [UserController::class, 'showCorrectHomepage'])->name('login');
 // 只有訪客可以訪問 /register，所以使用 middleware('guest')
