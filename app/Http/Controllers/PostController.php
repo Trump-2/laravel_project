@@ -8,6 +8,19 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function delete(Post $id)
+    {
+        // 示範在 controller 中使用自定義的 policy
+        // 使用 cannot() 來判斷當前使用者是否能夠刪除這則 post
+        if (auth()->user()->cannot('delete', $id)) {
+            return 'You cannot do that';
+        };
+
+        $id->delete();
+
+        return redirect('/profile/' . auth()->user()->username)->with('success', 'Post successfully deleted.');
+    }
+
     public function viewSinglePost(Post $id)
     {
         // 存取資料表中某筆紀錄的 title 欄位值

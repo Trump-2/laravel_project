@@ -19,7 +19,7 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('mustBeLog
 Route::get('/create-post', [PostController::class, 'showCreateForm'])->middleware('mustBeLoggedIn');
 Route::post('/create-post', [PostController::class, 'storeNewPost'])->middleware('mustBeLoggedIn');
 Route::get('/post/{id}', [PostController::class, 'viewSinglePost']);
-
+Route::delete('/post/{id}', [PostController::class, 'delete']);
 
 // Profile related routes
 // 參數的後面加上【 : 在資料表中作為查找依據的欄位名稱】
