@@ -22,4 +22,5 @@ Route::get('/post/{id}', [PostController::class, 'viewSinglePost']);
 
 
 // Profile related routes
+// 參數的後面加上【 : 在資料表中作為查找依據的欄位名稱】
 Route::get('/profile/{user:username}', [UserController::class, 'showProfile']);
