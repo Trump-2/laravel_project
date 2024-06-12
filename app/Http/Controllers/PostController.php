@@ -22,12 +22,12 @@ class PostController extends Controller
         // 直接將使用者導向回來自的 URL；
         return back()->with('success', 'Post updated successfully.');
     }
-    public function showEditForm(Post $id)
+    public function showEditForm(Post $post)
     {
 
-        return view('edit-post', ['post' => $id]);
+        return view('edit-post', ['post' => $post]);
     }
-    public function delete(Post $id)
+    public function delete(Post $post)
     {
         // 示範在 controller 中使用自定義的 policy
         // 使用 cannot() 來判斷當前使用者是否能夠刪除這則 post
@@ -35,21 +35,21 @@ class PostController extends Controller
         //     return 'You cannot do that';
         // };
 
-        $id->delete();
+        $post->delete();
 
         return redirect('/profile/' . auth()->user()->username)->with('success', 'Post successfully deleted.');
     }
 
-    public function viewSinglePost(Post $id)
+    public function viewSinglePost(Post $post)
     {
         // 存取資料表中某筆紀錄的 title 欄位值
         // return $id->title;
 
         // 使用內建的【Str :: markdown ( )】讓 laravel 支援「markdown」語法；該方法接受一參數，該參數會被解讀為 markdown，然後方法會回傳 html code
         // strip_tags( ) 的第二個參數用來指定允許的 html tags
-        $outHtml = strip_tags(Str::markdown($id->content), '<strong><ol><ul><li><h1><h2><h3><p><br>');
-        $id->content = $outHtml;
-        return view('single-post', ['post' => $id]);
+        $outHtml = strip_tags(Str::markdown($post->content), '<strong><ol><ul><li><h1><h2><h3><p><br>');
+        $post->content = $outHtml;
+        return view('single-post', ['post' => $post]);
     }
     //
     public function storeNewPost(Request $request)
