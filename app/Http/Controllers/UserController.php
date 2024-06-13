@@ -35,6 +35,12 @@ class UserController extends Controller
         // 使用 laravel 內建的【Storage】class，其裡面的 put ()
         // 此函數接受兩個參數：1. 路徑：儲存上傳檔案的資料夾和新的檔案名稱，2. 原始檔案
         Storage::put("public/avatars/$filename", $imgData);
+
+        // 更新某個 user 的 avatar 欄位值
+        $user->avatar = $filename;
+
+        // 將更新後的資料寫入資料庫中
+        $user->save();
     }
     public function showAvatarForm()
     {

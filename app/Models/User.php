@@ -3,9 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -23,6 +24,16 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+
+
+    // laravel 中的【 accessor 】；注意函數的名稱重要，他會是資料表中的某個欄位名稱
+    protected function avatar(): Attribute
+    {
+        // $value 參數是資料表中 avatar 欄位的值
+        return Attribute::make(get: function ($value) {
+            return $value ? '/storage/avatars/' . $value : '/fallback-avatar.jpg';
+        });
+    }
 
     /**
      * The attributes that should be hidden for serialization.
