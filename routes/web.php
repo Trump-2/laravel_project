@@ -19,8 +19,8 @@ Route::post('/register', [UserController::class, 'register'])->middleware('guest
 Route::post('/login', [UserController::class, 'login'])->middleware('guest');
 // 只有登入者可以訪問 /logout，所以使用 middleware('guest')
 Route::post('/logout', [UserController::class, 'logout'])->middleware('mustBeLoggedIn');
-Route::get('/manage-avatar', [UserController::class, 'showAvatarForm']);
-Route::post('/manage-avatar', [UserController::class, 'storeAvatar']);
+Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn');
+Route::post('/manage-avatar', [UserController::class, 'storeAvatar'])->middleware('mustBeLoggedIn');
 
 // Blog post related routes
 Route::get('/create-post', [PostController::class, 'showCreateForm'])->middleware('mustBeLoggedIn');

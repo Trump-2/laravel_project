@@ -5,12 +5,36 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class UserController extends Controller
 {
     public function storeAvatar(Request $request)
     {
-        $request->file('avatar')->store('public/avatars');
+
+        $request->validate([
+            // 代表此表單欄位的值必須是圖片類型且大小不能超過 3000 kilobytes
+            'avatar' => 'required|image|max:3000'
+        ]);
+
+        // $request->file('avatar')->store('public/avatars');
+
+        $user = auth()->user();
+
+        // 產生一個獨一無二的檔案名稱
+        $filename = $user->id . '-' . uniqid() . '.jpg';
+
+        // 使用透過 composer 安裝的套件
+        $manager = new ImageManager(new Driver());
+        // 取得傳入的檔案
+        $image = $manager->read($request->file('avatar'));
+        // 調整檔案的大小並將其轉成 jpep 格式
+        $imgData = $image->cover(120, 120)->toJpeg();
+        // 使用 laravel 內建的【Storage】class，其裡面的 put ()
+        // 此函數接受兩個參數：1. 路徑：儲存上傳檔案的資料夾和新的檔案名稱，2. 原始檔案
+        Storage::put("public/avatars/$filename", $imgData);
     }
     public function showAvatarForm()
     {
