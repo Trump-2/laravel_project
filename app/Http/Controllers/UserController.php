@@ -36,11 +36,23 @@ class UserController extends Controller
         // 此函數接受兩個參數：1. 路徑：儲存上傳檔案的資料夾和新的檔案名稱，2. 原始檔案
         Storage::put("public/avatars/$filename", $imgData);
 
+        $oldAvatar = $user->avatar;
+
+
         // 更新某個 user 的 avatar 欄位值
         $user->avatar = $filename;
 
         // 將更新後的資料寫入資料庫中
         $user->save();
+
+        // 代表在資料庫中 avatar 欄位原本是有值的
+        if ($oldAvatar != '/fallback-avatar.jpg') {
+            // $oldAvatar = /storage/avatars/xxx；而檔案存在的位置在 public/avatars/xxx
+            // 所以使用 php 的 str_replace() 來替換部分字串，使路徑正確
+            Storage::delete(str_replace("/storage/", "public/", $oldAvatar));
+        }
+
+        return back()->with('success', 'Congrats on the new avatar');
     }
     public function showAvatarForm()
     {
@@ -50,7 +62,7 @@ class UserController extends Controller
     public function showProfile(User $user)
     {
 
-        return view('profile-posts', ['username' => $user->username, 'posts' => $user->posts()->latest()->get(), 'postCount' => $user->posts()->count()]);
+        return view('profile-posts', ['avatar' => $user->avatar, 'username' => $user->username, 'posts' => $user->posts()->latest()->get(), 'postCount' => $user->posts()->count()]);
     }
     // public function showProfile($user)
     // {

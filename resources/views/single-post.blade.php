@@ -18,10 +18,10 @@
         @endcan
       </div>
 
-      {{-- 使用剛剛在 Post Model 建立的 user 函數，注意 43 行使用 user 函數的方式，沒有透過 ( ) 來使用 user 函數，接著存取 username 屬性 ( 也就是資料表中 username 欄位的值 ) --}}
+      {{-- 使用剛剛在 Post Model 建立的 user 函數，注意 25 行使用 user 函數的方式，沒有透過 ( ) 來使用 user 函數，接著存取 username 屬性 ( 也就是資料表中 username 欄位的值 ) --}}
       {{-- 使用內建的【format ( )】來格式化日期時間； --}}
       <p class="text-muted small mb-4">
-        <a href="#"><img class="avatar-tiny" src="https://gravatar.com/avatar/f64fc44c03a8a7eb1d52502950879659?s=128" /></a>
+        <a href="#"><img class="avatar-tiny" src="{{ $post->user->avatar }}" /></a>
         Posted by <a href="#">{{ $post->user->username}}</a> on {{$post->created_at->format('n/j/Y')}}
       </p>
 
