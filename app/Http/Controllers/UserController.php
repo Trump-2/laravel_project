@@ -67,7 +67,7 @@ class UserController extends Controller
 
         // 使用者登入時
         if (auth()->check()) {
-            $currentlyFollowing = Follow::where(['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id])->count();
+            $currentlyFollowing = Follow::where([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->count();
         }
 
         return view('profile-posts', ['currentlyFollowing' => $currentlyFollowing, 'avatar' => $user->avatar, 'username' => $user->username, 'posts' => $user->posts()->latest()->get(), 'postCount' => $user->posts()->count()]);
