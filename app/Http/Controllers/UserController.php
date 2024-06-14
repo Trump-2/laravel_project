@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Follow;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -60,8 +61,7 @@ class UserController extends Controller
         return view('avatar-form');
     }
 
-
-    public function profileFollowers(User $user)
+    private function getSharedData($user)
     {
         // 未登入時
         $currentlyFollowing = 0;
@@ -71,35 +71,30 @@ class UserController extends Controller
             $currentlyFollowing = Follow::where([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->count();
         }
 
-        return view('profile-followers', ['currentlyFollowing' => $currentlyFollowing, 'avatar' => $user->avatar, 'username' => $user->username, 'posts' => $user->posts()->latest()->get(), 'postCount' => $user->posts()->count()]);
+        View::share('sharedData', ['currentlyFollowing' => $currentlyFollowing, 'avatar' => $user->avatar, 'username' => $user->username, 'postCount' => $user->posts()->count()]);
+    }
+
+
+    public function profileFollowers(User $user)
+    {
+        $this->getSharedData($user);
+
+        return view('profile-followers', ['posts' => $user->posts()->latest()->get()]);
     }
 
 
     public function profileFollowing(User $user)
     {
-        // 未登入時
-        $currentlyFollowing = 0;
-
-        // 使用者登入時
-        if (auth()->check()) {
-            $currentlyFollowing = Follow::where([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->count();
-        }
-
-        return view('profile-following', ['currentlyFollowing' => $currentlyFollowing, 'avatar' => $user->avatar, 'username' => $user->username, 'posts' => $user->posts()->latest()->get(), 'postCount' => $user->posts()->count()]);
+        $this->getSharedData($user);
+        return view('profile-following', ['posts' => $user->posts()->latest()->get()]);
     }
 
 
     public function showProfile(User $user)
     {
-        // 未登入時
-        $currentlyFollowing = 0;
+        $this->getSharedData($user);
 
-        // 使用者登入時
-        if (auth()->check()) {
-            $currentlyFollowing = Follow::where([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->count();
-        }
-
-        return view('profile-posts', ['currentlyFollowing' => $currentlyFollowing, 'avatar' => $user->avatar, 'username' => $user->username, 'posts' => $user->posts()->latest()->get(), 'postCount' => $user->posts()->count()]);
+        return view('profile-posts', ['posts' => $user->posts()->latest()->get()]);
     }
     // public function showProfile($user)
     // {
