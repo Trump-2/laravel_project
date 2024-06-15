@@ -58,9 +58,22 @@ class User extends Authenticatable
         ];
     }
 
+    // 此方法用來回傳 user 和 follow 之間的關係；因為是在 User Model 中，所以都是以 user 的角度為出發點
+    public function followers()
+    {
+        // hasMany 是 Laravel Eloquent 中的一個方法，用來定義一對多的關係；第一個參數是參考的 model、第二個則是 foreign key
+        return $this->hasMany(Follow::class, 'followeduser');
+    }
+
+    // 此方法用來回傳 user 和 follow 之間的關係；因為是在 User Model 中，所以都是以 user 的角度為出發點
+    public function followingTheseUsers()
+    {
+        return $this->hasMany(Follow::class, 'user_id');
+    }
+
+    // 此方法用來回傳 user 和 post 之間的關係；因為是在 User Model 中，所以都是以 user 的角度為出發點
     public function posts()
     {
-        // hasMany 是 Laravel Eloquent 中的一個方法，用來定義一對多的關係
         return $this->hasMany(Post::class, 'user_id');
     }
 }
