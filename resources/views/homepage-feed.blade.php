@@ -12,7 +12,11 @@
           </a>
           @endforeach
         </div>
-      
+        
+        <div class="mt-4">
+          {{ $posts->links() }}
+        </div>
+
         @else
         <div class="text-center">
           {{-- auth ( ) -> user ( ) -> username】來取得登入者的使用者名稱； 注意：username 不是固定的，而是根據資料表中定義的欄位名稱有所不同 --}}

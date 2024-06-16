@@ -115,7 +115,7 @@ class UserController extends Controller
     {
         // auth()->check() 用來檢查使用者是否已經登入，如果是則回傳 true、反之則為 false
         if (auth()->check()) {
-            return view('homepage-feed', ['posts' => auth()->user()->feedPosts()->latest()->get()]);
+            return view('homepage-feed', ['posts' => auth()->user()->feedPosts()->latest()->paginate(5)]);
         } else {
             return view('homepage');
         }
