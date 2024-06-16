@@ -21,8 +21,8 @@
       {{-- 使用剛剛在 Post Model 建立的 user 函數，注意 25 行使用 user 函數的方式，沒有透過 ( ) 來使用 user 函數，接著存取 username 屬性 ( 也就是資料表中 username 欄位的值 ) --}}
       {{-- 使用內建的【format ( )】來格式化日期時間； --}}
       <p class="text-muted small mb-4">
-        <a href="#"><img class="avatar-tiny" src="{{ $post->user->avatar }}" /></a>
-        Posted by <a href="#">{{ $post->user->username}}</a> on {{$post->created_at->format('n/j/Y')}}
+        <a href="/profile/{{ $post->user->username }}"><img class="avatar-tiny" src="{{ $post->user->avatar }}" /></a>
+        Posted by <a href="/profile/{{ $post->user->username }}">{{ $post->user->username}}</a> on {{$post->created_at->format('n/j/Y')}}
       </p>
 
       <div class="body-content">

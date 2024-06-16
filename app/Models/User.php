@@ -58,6 +58,13 @@ class User extends Authenticatable
         ];
     }
 
+    // 此方法用來回傳 user、follow、post 三個之間的關係
+    public function feedPosts()
+    {
+        return $this->hasManyThrough(Post::class, Follow::class, 'user_id', 'user_id', 'id', 'followeduser');
+    }
+
+
     // 此方法用來回傳 user 和 follow 之間的關係；因為是在 User Model 中，所以都是以 user 的角度為出發點
     public function followers()
     {

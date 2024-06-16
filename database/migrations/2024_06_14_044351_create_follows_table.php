@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('follows', function (Blueprint $table) {
             $table->id();
             // 儲存著創造追蹤這件事情的使用者；foreignId() 會自動將某欄位設定為 foreign key
+            // constrained() 會限制 user_id 欄位的值必須是在 user 資料表 id 欄位存在的
             $table->foreignId('user_id')->constrained();
 
             // 儲存著被追蹤的使用者

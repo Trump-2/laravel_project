@@ -80,7 +80,7 @@ class UserController extends Controller
         $this->getSharedData($user);
 
         // 測試用
-        return $user->followers()->latest()->get();
+        // return $user->followers()->latest()->get();
 
         return view('profile-followers', ['followers' => $user->followers()->latest()->get()]);
     }
@@ -115,7 +115,7 @@ class UserController extends Controller
     {
         // auth()->check() 用來檢查使用者是否已經登入，如果是則回傳 true、反之則為 false
         if (auth()->check()) {
-            return view('homepage-feed');
+            return view('homepage-feed', ['posts' => auth()->user()->feedPosts()->latest()->get()]);
         } else {
             return view('homepage');
         }
