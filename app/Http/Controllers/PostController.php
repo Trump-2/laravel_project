@@ -10,6 +10,11 @@ class PostController extends Controller
 {
     public function search($term)
     {
+        // 傳入要搜尋的關鍵字到 search() 方法中
+        $posts = Post::search($term)->get();
+        // 代表要從 user 資料表中取得指定欄位的資料 ( 之前有在 Post model 中設定 user 函數 )
+        $posts->load('user:id,username,avatar');
+        return $posts;
     }
 
     public function update(Post $post, Request $request)

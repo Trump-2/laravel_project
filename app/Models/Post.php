@@ -8,10 +8,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
+    // 和 laravel 的 scout 有關；代表這個 Model 是可被搜尋的
     use Searchable;
+
     use HasFactory;
 
     protected $fillable = ['title', 'content', 'user_id'];
+
+    public function toSearchableArray()
+    {
+        return [
+            "title" => $this->title,
+            "content" => $this->content
+        ];
+    }
 
     public function user()
     {
