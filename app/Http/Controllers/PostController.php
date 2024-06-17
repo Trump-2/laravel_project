@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function search($term)
+    {
+    }
+
     public function update(Post $post, Request $request)
     {
         $incomingFields = $request->validate([
