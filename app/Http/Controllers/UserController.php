@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Follow;
 use Illuminate\Http\Request;
+use App\Events\OurExampleEvent;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageManager;
@@ -106,6 +107,9 @@ class UserController extends Controller
 
     public function logout()
     {
+        // 告訴 laravel 自定義的 event 發生了
+        event(new OurExampleEvent(['username' => auth()->user()->username, 'action' => 'logout']));
+
         // auth()->logout() 用來登出使用者
         auth()->logout();
         return redirect('/')->with('success', 'You are now logged out.');
@@ -131,6 +135,9 @@ class UserController extends Controller
         // laravel 內建的全域函數【auth ( )】中的【attempt ( )】會將資料庫中資料表中某筆紀錄的指定欄位值和使用者輸入的值進行比較，如果相同回傳 true、反之則為 false； 
         if (auth()->attempt(['username' => $incomingFields['loginusername'], 'password' => $incomingFields['loginpassword']])) {
             $request->session()->regenerate();
+
+            event(new OurExampleEvent(['username' => auth()->user()->username, 'action' => 'login']));
+
             return redirect('/')->with('success', 'You have successfully logged in.');
         } else {
             return redirect('/')->with('failure', 'Invalid login.');
