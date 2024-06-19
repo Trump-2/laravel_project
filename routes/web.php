@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Events\ChatMessage;
 // import 我們建立的 controller
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\MustBeLoggedIn;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -42,3 +44,23 @@ Route::get('/search/{term}', [PostController::class, 'search']);
 Route::get('/profile/{user:username}', [UserController::class, 'showProfile']);
 Route::get('/profile/{user:username}/followers', [UserController::class, 'profileFollowers']);
 Route::get('/profile/{user:username}/following', [UserController::class, 'profileFollowing']);
+
+// chat route
+Route::post('/send-chat-message', function (Request $request) {
+    $formFields = $request->validate([
+        'textvalue' => 'required'
+
+    ]);
+
+    // 如果為 true，代表使用者沒有輸入任何有效的內容
+    if (!trim(strip_tags($formFields['textvalue']))) {
+        // 對於請求，不回應任何東西的意思
+        return response()->noContent();
+    }
+
+    // 使用內建【broadcast( )】，來廣播訊息；接受 event 的實體作為參數
+    // 傳入需要的資料給 ChatMessage event
+    broadcast(new ChatMessage(['username' => auth()->user()->username, 'textvalue' => strip_tags($request->textvalue), 'avatar' => auth()->user()->avatar]))->toOthers();
+    // 對於請求，不回應任何東西的意思
+    return response()->noContent();
+})->middleware('mustBeLoggedIn');
